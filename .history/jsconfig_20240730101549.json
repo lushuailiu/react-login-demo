@@ -1,0 +1,11 @@
+// 配置 jsconfig 路径别名
+{
+    "compilerOptions": {
+        "baseUrl": "./src",
+        "paths": {
+            "@/*": [
+                "*"
+            ]
+        }
+    }
+}

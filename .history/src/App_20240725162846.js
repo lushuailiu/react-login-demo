@@ -1,9 +1,8 @@
-import {Button} from 'antd'
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <Button type='primary'>test</Button>
+        hello world
       </header>
     </div>
   );
