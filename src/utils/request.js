@@ -7,7 +7,7 @@ import axios from 'axios'
 //  3.请求拦截器/相应拦截器
 
 const requst = axios.create({
-    baseURL: 'http://geek.iteima.net/v1_0',
+    baseURL: 'http://geek.itheima.net/v1_0',
     timeout: 5000
 })
 
