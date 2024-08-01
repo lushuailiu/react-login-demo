@@ -2,12 +2,23 @@ import { Button, Card, Form, Input } from 'antd'
 import logo from '@/assets/logo.png'
 import '@/pages/Login/index.scss'
 const Login = () => {
+    const onFinish = (values) => {
+        console.log(values)
+    }
+    const onFinishFailed = (errorInfo) => {
+        console.log('Failed:', errorInfo);
+    }
     return (
         <div className="login">
             <Card className="login-container">
                 <img className="login-logo" src={logo} alt="" />
                 {/* 登录表单 */}
-                <Form>
+                <Form
+                    // 提交表单且数据验证成功后回调事件	
+                    onFinish={onFinish}
+                    //提交表单且数据验证失败后回调事件	
+                    onFinishFailed={ onFinishFailed}
+                >
                     <Form.Item
                         name="mobile"
                         validateTrigger='onBlur'
