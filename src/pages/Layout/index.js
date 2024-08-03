@@ -55,7 +55,7 @@ const GeekLayout = () => {
   // 退出登录确认回调
   const onConfirm = () => {
     console.log('确认退出')
-    // dispatch(clearUserInfo())
+    dispatch(clearUserInfo())
     navigate('/login')
   }
   // 获取用户信息
