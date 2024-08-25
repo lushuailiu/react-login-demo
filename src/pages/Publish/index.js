@@ -54,10 +54,23 @@ const Publish = () => {
         createArticleAPI(reqData)
 
 
-        //触发异步action fetchLogin
-        // await dispatch(fetchLogin(values))
-        // navigate('/')
-        // message.success('登录成功')
+
+    }
+
+    // 上传图片
+    const [imageList, setImageList] = useState([])
+    const onUploadChange = (info) => {
+        console.log(info)
+        console.log('正在上传')
+        setImageList(info.fileList)
+    }
+
+    // 控制图片Type
+    const [imageType, setImageType] = useState(0)
+
+    const onTypeChange = (e) => {
+        console.log(e)
+        setImageType(e.target.value)
     }
 
     return (
@@ -94,6 +107,30 @@ const Publish = () => {
                             {channelList.map(item => <Option key={item.id} value={item.id}>{item.name}</Option>)}
                         </Select>
                     </Form.Item>
+
+                    <Form.Item label="封面">
+                        <Form.Item name="type">
+                            <Radio.Group onChange={onTypeChange}>
+                                <Radio value={1}>单图</Radio>
+                                <Radio value={3}>三图</Radio>
+                                <Radio value={0}>无图</Radio>
+                            </Radio.Group>
+                        </Form.Item>
+                        {
+                            imageType !== 0 && <Upload
+                            name="image"
+                            listType="picture-card"
+                            showUploadList
+                            onChange={onUploadChange}
+                            action={'http://geek.itheima.net/v1_0/upload'}
+                        >
+                            <div style={{ marginTop: 8 }}>
+                                <PlusOutlined />
+                            </div>
+                        </Upload>
+                        }
+                    </Form.Item>
+
                     <Form.Item
                         label="内容"
                         name="content"
@@ -109,13 +146,7 @@ const Publish = () => {
                     </Form.Item>
 
 
-                    <Form.Item label="封面" name="type">
-                        <Radio.Group>
-                            <Radio value={1}>单图</Radio>
-                            <Radio value={3}>三图</Radio>
-                            <Radio value={0}>无图</Radio>
-                        </Radio.Group>
-                    </Form.Item>
+
 
                     <Form.Item wrapperCol={{ offset: 4 }}>
                         <Space>
