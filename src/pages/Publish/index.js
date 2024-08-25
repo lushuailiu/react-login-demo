@@ -48,7 +48,7 @@ const Publish = () => {
                 images: []
             }
         }
-        
+
         // 2. 调用接口提交
 
         createArticleAPI(reqData)
@@ -109,13 +109,13 @@ const Publish = () => {
                     </Form.Item>
 
 
-                    {/* <Form.Item label="封面" name="type">
-              <Radio.Group>
-                <Radio value={1}>单图</Radio>
-                <Radio value={3}>三图</Radio>
-                <Radio value={0}>无图</Radio>
-              </Radio.Group>
-            </Form.Item> */}
+                    <Form.Item label="封面" name="type">
+                        <Radio.Group>
+                            <Radio value={1}>单图</Radio>
+                            <Radio value={3}>三图</Radio>
+                            <Radio value={0}>无图</Radio>
+                        </Radio.Group>
+                    </Form.Item>
 
                     <Form.Item wrapperCol={{ offset: 4 }}>
                         <Space>
