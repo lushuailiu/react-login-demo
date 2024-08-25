@@ -66,7 +66,7 @@ const Publish = () => {
     }
 
     // 控制图片Type
-    const [imageType, setImageType] = useState(0)
+    const [imageType, setImageType] = useState(1)
 
     const onTypeChange = (e) => {
         console.log(e)
@@ -123,6 +123,7 @@ const Publish = () => {
                             showUploadList
                             onChange={onUploadChange}
                             action={'http://geek.itheima.net/v1_0/upload'}
+                            maxCount={imageType}
                         >
                             <div style={{ marginTop: 8 }}>
                                 <PlusOutlined />
