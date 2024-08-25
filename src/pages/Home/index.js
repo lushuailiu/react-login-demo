@@ -1,5 +1,3 @@
-import * as echarts from 'echarts';
-import { useEffect, useRef } from 'react';
 import './index.scss'
 import { Card, Col, Row } from 'antd';
 import BarChart from './components/BarChart';
