@@ -7,14 +7,15 @@ import {
     Input,
     Upload,
     Space,
-    Select
+    Select,
+    message
 } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
 import './index.scss'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { createArticleAPI, getCchannelAPI } from '@/apis/article'
 import { type } from '@testing-library/user-event/dist/type'
 
@@ -37,15 +38,16 @@ const Publish = () => {
     //提交表单
     const onFinish = async (formValue) => {
         console.log(formValue)
+        if (imageType !== imageList.length) return message.warning('图片类型和数量不一致')
         //解构赋值
-        const { channel_id, title, content } = formValue
+        const { channel_id, title, content, type } = formValue
         const reqData = {
             channel_id,
             title,
             content,
             cover: {
-                type: 0,
-                images: []
+                type, //封面模式
+                images: imageList.map(item => item.response.data.url)
             }
         }
 
@@ -57,20 +59,32 @@ const Publish = () => {
 
     }
 
+
     // 上传图片
+    const cacheImageList = useRef([])
     const [imageList, setImageList] = useState([])
     const onUploadChange = (info) => {
-        console.log(info)
         console.log('正在上传')
+        console.log(info.fileList)
         setImageList(info.fileList)
+        cacheImageList.current = info.fileList
+
     }
 
     // 控制图片Type
     const [imageType, setImageType] = useState(1)
 
     const onTypeChange = (e) => {
-        console.log(e)
-        setImageType(e.target.value)
+        const type = e.target.value
+        setImageType(type)
+        if (type === 1) {
+          // 单图，截取第一张展示
+          const imgList = cacheImageList.current[0] ? [cacheImageList.current[0]] : []
+          setImageList(imgList)
+        } else if (type === 3) {
+          // 三图，取所有图片展示
+          setImageList(cacheImageList.current)
+        }
     }
 
     return (
@@ -118,17 +132,18 @@ const Publish = () => {
                         </Form.Item>
                         {
                             imageType !== 0 && <Upload
-                            name="image"
-                            listType="picture-card"
-                            showUploadList
-                            onChange={onUploadChange}
-                            action={'http://geek.itheima.net/v1_0/upload'}
-                            maxCount={imageType}
-                        >
-                            <div style={{ marginTop: 8 }}>
-                                <PlusOutlined />
-                            </div>
-                        </Upload>
+                                name="image"
+                                listType="picture-card"
+                                showUploadList
+                                onChange={onUploadChange}
+                                action={'http://geek.itheima.net/v1_0/upload'}
+                                maxCount={imageType}
+                                fileList={imageList}
+                            >
+                                <div style={{ marginTop: 8 }}>
+                                    <PlusOutlined />
+                                </div>
+                            </Upload>
                         }
                     </Form.Item>
 
