@@ -1,7 +1,7 @@
 //用户相关状态管理
+import { loginAPI, userInfoAPI } from '@/apis/user'
+import { setToken as _setToken, getToken, removeToken } from '@/utils'
 import { createSlice } from '@reduxjs/toolkit'
-import { requst, getToken, setToken as _setToken, removeToken } from '@/utils'
-import { loginAPI,userInfoAPI } from '@/apis/user'
 const userState = createSlice({
     name: 'user',
     //数据状态
@@ -60,6 +60,6 @@ const fetchUserInfo = () => {
 //         dispatch(setUserInfo({}))
 //     }
 // }
-export { fetchLogin, setToken, fetchUserInfo, clearUserInfo }
+export { clearUserInfo, fetchLogin, fetchUserInfo, setToken }
 
 export default userReducer

@@ -6,7 +6,7 @@ import { Table, Tag, Space } from 'antd'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import img404 from '@/assets/error.png'
 import { useState, useEffect } from 'react'
-import { getCchannelAPI } from '@/apis/article'
+import { getArticleListAPI, getCchannelAPI } from '@/apis/article'
 
 const { Option } = Select
 const { RangePicker } = DatePicker
@@ -90,10 +90,58 @@ const Article = () => {
     // 获取频道列表
     const getCchannelList = async () => {
       const res = await getCchannelAPI()
+      console.log(res.data.channels)
       setChannelList(res.data.channels)
     }
     getCchannelList()
+
+
   }, [])
+
+
+  const [article, setArticleList] = useState({
+    list: [],
+    count: 0
+  })
+
+  const [params, setParams] = useState({
+    page: 1,
+    per_page: 10,
+    begin_pubdate: null,
+    end_pubdate: null,
+    status: null,
+    channel_id: null
+  })
+
+  useEffect(() => {
+    async function fetchArticleList () {
+
+      const res = await getArticleListAPI(params)
+      
+      console.log(res.data)
+      const { results, total_count } = res.data
+      setArticleList({
+        list: results,
+        count: total_count
+      })
+    }
+    fetchArticleList()
+  }, [params])
+
+
+  // 筛选
+  const onFinish = async (formValues) => {
+    console.log(formValues) 
+    setParams({ ...formValues })
+    const res = await getArticleListAPI(params)
+    console.log(res.data)
+    const { results, total_count } = res.data
+    setArticleList({
+      list: results,
+      count: total_count
+    })
+  }
+
   return (
     <div>
       <Card
@@ -105,7 +153,10 @@ const Article = () => {
         }
         style={{ marginBottom: 20 }}
       >
-        <Form initialValues={{ status: '' }}>
+        <Form 
+        
+        onFinish={onFinish}
+        initialValues={{ status: '' }}>
           <Form.Item label="状态" name="status">
             <Radio.Group>
               <Radio value={''}>全部</Radio>
@@ -117,7 +168,7 @@ const Article = () => {
           <Form.Item label="频道" name="channel_id">
             <Select
               placeholder="请选择文章频道"
-              
+
               style={{ width: 120 }}
             >
               {channelList.map(item => <Option key={item.id} value={item.id}>{item.name}</Option>)}
@@ -137,8 +188,8 @@ const Article = () => {
         </Form>
       </Card>
 
-      <Card title={`根据筛选条件共查询到 count 条结果：`}>
-        <Table rowKey="id" columns={columns} dataSource={data} />
+      <Card title={`根据筛选条件共查询到 ${article.count} 条结果：`}>
+        <Table rowKey="id" columns={columns} dataSource={article.list} />
       </Card>
     </div>
   )
